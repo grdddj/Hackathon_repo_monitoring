@@ -56,26 +56,11 @@ def get_rate_limit():
     Helper function to see what limit we have
     """
     rate_limit_endpoint = "https://api.github.com/rate_limit"
-<<<<<<< HEAD
-    rate_limit_response = requests.get(
-        rate_limit_endpoint, headers=headers).text
-    print(rate_limit_response)
-=======
     rate_limit_response = requests.get(rate_limit_endpoint, headers=HEADERS).text
->>>>>>> c37e818850f5a3effd7cdce5fbe8ddf160eabfd5
     rate_limit_dict = json.loads(rate_limit_response)
     rate_limit = rate_limit_dict["resources"]["core"]["remaining"]
     print("rate_limit", rate_limit)
 
-<<<<<<< HEAD
-
-def get_contributors_and_amounts_of_commits():
-    rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/contributors"
-    rate_limit_response = requests.get(
-        rate_limit_endpoint, headers=headers).text
-    print(rate_limit_response)
-    rate_limit_dict = json.loads(rate_limit_response)
-=======
 def get_contributors_and_amounts_of_commits(user_name, repo_name):
     """
     Returning number of contributors and overall number of commits
@@ -84,7 +69,6 @@ def get_contributors_and_amounts_of_commits(user_name, repo_name):
     endpoint = CONTRIBUTORS_ENDPOINT_TEMPLATE.format(user_name, repo_name)
     response = requests.get(endpoint, headers=HEADERS).text
     response_dict = json.loads(response)
->>>>>>> c37e818850f5a3effd7cdce5fbe8ddf160eabfd5
 
     contributors_amount = len(response_dict)
     commit_amounts = {}
@@ -94,20 +78,10 @@ def get_contributors_and_amounts_of_commits(user_name, repo_name):
     print("commit_amounts", commit_amounts)
     print("contributors_amount", contributors_amount)
 
-<<<<<<< HEAD
-
-def get_branches():
-    rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/branches"
-    rate_limit_response = requests.get(
-        rate_limit_endpoint, headers=headers).text
-    print(rate_limit_response)
-    rate_limit_dict = json.loads(rate_limit_response)
-=======
     return {
         "contributors_amount": contributors_amount,
         "commit_amounts": commit_amounts
     }
->>>>>>> c37e818850f5a3effd7cdce5fbe8ddf160eabfd5
 
 def get_branches(user_name, repo_name):
     """
@@ -123,18 +97,8 @@ def get_branches(user_name, repo_name):
     for branch in response_dict:
         branch_names.append(branch["name"])
 
-<<<<<<< HEAD
-
-def get_languages():
-    rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/languages"
-    rate_limit_response = requests.get(
-        rate_limit_endpoint, headers=headers).text
-    print(rate_limit_response)
-    rate_limit_dict = json.loads(rate_limit_response)
-=======
     print("branch_amount", branch_amount)
     print("branch_names", branch_names)
->>>>>>> c37e818850f5a3effd7cdce5fbe8ddf160eabfd5
 
     return {
         "branch_amount": branch_amount,
