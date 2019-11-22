@@ -1,20 +1,24 @@
 import requests
 import json
 
-token = "8b1d4f951340d361370167e2013a1ec986370a2e"
+token = "f868e0139417bf8ffc09341baa0376759c04587f"
 headers = {"Authorization": "token {}".format(token)}
+
 
 def get_rate_limit():
     rate_limit_endpoint = "https://api.github.com/rate_limit"
-    rate_limit_response = requests.get(rate_limit_endpoint, headers=headers).text
+    rate_limit_response = requests.get(
+        rate_limit_endpoint, headers=headers).text
     print(rate_limit_response)
     rate_limit_dict = json.loads(rate_limit_response)
     rate_limit = rate_limit_dict["resources"]["core"]["limit"]
     print(rate_limit)
 
+
 def get_contributors_and_amounts_of_commits():
     rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/contributors"
-    rate_limit_response = requests.get(rate_limit_endpoint, headers=headers).text
+    rate_limit_response = requests.get(
+        rate_limit_endpoint, headers=headers).text
     print(rate_limit_response)
     rate_limit_dict = json.loads(rate_limit_response)
 
@@ -26,9 +30,11 @@ def get_contributors_and_amounts_of_commits():
 
     print(commit_amounts)
 
+
 def get_branches():
     rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/branches"
-    rate_limit_response = requests.get(rate_limit_endpoint, headers=headers).text
+    rate_limit_response = requests.get(
+        rate_limit_endpoint, headers=headers).text
     print(rate_limit_response)
     rate_limit_dict = json.loads(rate_limit_response)
 
@@ -39,9 +45,11 @@ def get_branches():
         branch_names.append(branch["name"])
     print(branch_names)
 
+
 def get_languages():
     rate_limit_endpoint = "https://api.github.com/repos/grdddj/Diploma-Thesis---Inverse-Heat-Transfer/languages"
-    rate_limit_response = requests.get(rate_limit_endpoint, headers=headers).text
+    rate_limit_response = requests.get(
+        rate_limit_endpoint, headers=headers).text
     print(rate_limit_response)
     rate_limit_dict = json.loads(rate_limit_response)
 
@@ -51,6 +59,7 @@ def get_languages():
     for language in rate_limit_dict:
         language_names.append(language)
     print(language_names)
+
 
 if __name__ == "__main__":
     # get_rate_limit()
