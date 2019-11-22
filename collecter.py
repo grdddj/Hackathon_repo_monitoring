@@ -6,14 +6,33 @@ import json
 TOKEN = "f868e0139417bf8ffc09341baa0376759c04587f"
 HEADERS = {"Authorization": "token {}".format(TOKEN)}
 
-# Aggregating all the repositories we want to track
-# Making it a set, not to accidentally put there one repo twice :)
-LIST_OF_REPOSITORIES = {
-    "https://github.com/Fenristan/Hackathon-2019",
-    "https://github.com/blaza168/hack_2019",
-    "https://github.com/Kubos-cz/atthack20",
-    "https://github.com/szymsza/att-hackathon"
-}
+TEAM_LIST = [
+    {
+        "team_name": "Prestiz",
+        "table_number": 9,
+        "repo_link": "https://github.com/Fenristan/Hackathon-2019"
+    },
+    {
+        "team_name": "Gray Team",
+        "table_number": 5,
+        "repo_link": "https://github.com/blaza168/hack_2019"
+    },
+    {
+        "team_name": "Team20",
+        "table_number": 20,
+        "repo_link": "https://github.com/Kubos-cz/atthack20"
+    },
+    {
+        "team_name": "Hundiska",
+        "table_number": 10,
+        "repo_link": "https://github.com/szymsza/att-hackathon"
+    }
+]
+
+# Dictionaries to store the aggregated information
+CONTRIBUTORS_INFORMATION = {}
+LANGUAGES_INFORMATION = {}
+BRANCHES_INFORMATION = {}
 
 # Templates for endpoints, to which user_name and repo_name should be inputted
 CONTRIBUTORS_ENDPOINT_TEMPLATE = "https://api.github.com/repos/{}/{}/contributors"
@@ -148,7 +167,8 @@ def get_languages(user_name, repo_name):
 
 if __name__ == "__main__":
     get_rate_limit()
-    for repo_link in LIST_OF_REPOSITORIES:
+    for team in TEAM_LIST:
+        repo_link = team["repo_link"]
         user_name, repo_name = _extract_name_and_repo_from_link(repo_link)
 
         get_languages(user_name=user_name, repo_name=repo_name)
