@@ -45,6 +45,14 @@
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#languages">Languages</a>
           </li>
+          <li class="nav-item pl-1 mx-0 mx-lg-1">
+            <span class="navbar-text">
+              <div class="countdown">
+                <span class="minutes"></span> Minutes<br/>
+                <span class="seconds"></span> Seconds
+              </div>
+            </span>
+          </li>
         </ul>
       </div>
     </div>
@@ -94,14 +102,11 @@
 
       <!-- Commit Section Content -->
       <div class="row">
-        <div class="col-lg-4 ml-auto">
-          <p class="lead">TODO: Commit section</p>
-        </div>
-        <div class="col-lg-4 mr-auto">
-          <p class="lead">Some content</p>
+        <div class="col-lg-4 m-auto">
+          <p class="lead text-center">Overall commit amount</p>
         </div>
         <div class="row">
-          <table id="results">
+          <table id="commits-table" class="table">
             <!-- API Json as table content here -->
 
           </table>
@@ -136,7 +141,7 @@
         </div>
       </div>
       <div class="row">
-        <table id="results">
+        <table id="branches-table" class="table">
           <!-- API Json as table content here -->
 
         </table>
@@ -173,7 +178,7 @@
           <p class="lead">Some content</p>
         </div>
         <div class="row">
-          <table id="results">
+          <table id="languages-table" class="table">
             <!-- API Json as table content here -->
 
           </table>
@@ -196,6 +201,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>
