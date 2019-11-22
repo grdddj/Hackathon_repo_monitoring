@@ -8,24 +8,34 @@ HEADERS = {"Authorization": "token {}".format(TOKEN)}
 
 TEAM_LIST = [
     {
-        "team_name": "Prestiz",
-        "table_number": 9,
-        "repo_link": "https://github.com/Fenristan/Hackathon-2019"
-    },
-    {
         "team_name": "Gray Team",
         "table_number": 5,
         "repo_link": "https://github.com/blaza168/hack_2019"
     },
     {
-        "team_name": "Team20",
-        "table_number": 20,
-        "repo_link": "https://github.com/Kubos-cz/atthack20"
+        "team_name": "grepnebonic",
+        "table_number": 6,
+        "repo_link": "https://github.com/atthack-2019/rogue-ap-detection"
+    },
+    {
+        "team_name": "Prestiz",
+        "table_number": 9,
+        "repo_link": "https://github.com/Fenristan/Hackathon-2019"
     },
     {
         "team_name": "Hundiska",
         "table_number": 10,
-        "repo_link": "https://github.com/szymsza/att-hackathon"
+        "repo_link": "https://github.com/szymsza/happy-chick-house"
+    },
+    {
+        "team_name": "Uzlabina",
+        "table_number": 13,
+        "repo_link": "https://github.com/kubax2000/ATTHACK2019"
+    },
+    {
+        "team_name": "Team20",
+        "table_number": 20,
+        "repo_link": "https://github.com/Kubos-cz/atthack20"
     }
 ]
 
@@ -75,12 +85,18 @@ def get_contributors_and_amounts_of_commits(user_name, repo_name):
     for person in response_dict:
         commit_amounts[person["login"]] = person["contributions"]
 
+    overall_commit_amount = 0
+    for person  in commit_amounts:
+        overall_commit_amount += commit_amounts[person]
+
+    print("overall_commit_amount", overall_commit_amount)
     print("commit_amounts", commit_amounts)
     print("contributors_amount", contributors_amount)
 
     return {
         "contributors_amount": contributors_amount,
-        "commit_amounts": commit_amounts
+        "commit_amounts": commit_amounts,
+        "overall_commit_amount": overall_commit_amount
     }
 
 def get_branches(user_name, repo_name):
@@ -135,8 +151,8 @@ if __name__ == "__main__":
         repo_link = team["repo_link"]
         user_name, repo_name = _extract_name_and_repo_from_link(repo_link)
 
-        get_languages(user_name=user_name, repo_name=repo_name)
-        get_branches(user_name=user_name, repo_name=repo_name)
+        # get_languages(user_name=user_name, repo_name=repo_name)
+        # get_branches(user_name=user_name, repo_name=repo_name)
         get_contributors_and_amounts_of_commits(user_name=user_name, repo_name=repo_name)
 
     # get_rate_limit()
