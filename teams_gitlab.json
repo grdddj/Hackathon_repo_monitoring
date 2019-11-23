@@ -1,0 +1,46 @@
+{
+  "team_list": [
+      {
+          "team_name": "Weilovka",
+          "table_number": 3,
+          "repo_link": "https://gitlab.com/perglervit/airq",
+          "project_ids": [15484838]
+      },
+      {
+          "team_name": "GML",
+          "table_number": 8,
+          "repo_link": "https://gitlab.com/gml-atthack2019/",
+          "project_ids": [15478984, 15478960]
+      },
+      {
+          "team_name": "Creative Hill College",
+          "table_number": 11,
+          "repo_link": "https://gitlab.com/chc-hackathon/hackathon-chc.git",
+          "project_ids": [15478841]
+      },
+      {
+          "team_name": "Arcidarebaci",
+          "table_number": 12,
+          "repo_link": "https://gitlab.com/hackathon-arciderebaci",
+          "project_ids": [15483928, 15482456]
+      },
+      {
+          "team_name": "Ustredni Topeni 2.0",
+          "table_number": 14,
+          "repo_link": "https://gitlab.com/ustredni-topeni-atthack-2019/repo",
+          "project_ids": [15486325]
+      },
+      {
+          "team_name": "Patek",
+          "table_number": 16,
+          "repo_link": "https://gitlab.com/patek-devs/psc",
+          "project_ids": [15482281]
+      },
+      {
+          "team_name": "lisoft",
+          "table_number": 17,
+          "repo_link": "https://gitlab.com/lisoft-at-t-hackathon-2019",
+          "project_ids": [15476302, 15476273, 15476268, 15477470]
+      }
+    ]
+}
