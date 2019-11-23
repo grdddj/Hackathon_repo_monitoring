@@ -111,7 +111,10 @@ def get_branches(user_name, repo_name):
     branch_amount = len(response_dict)
     branch_names = []
     for branch in response_dict:
-        branch_names.append(branch["name"])
+        try:
+            branch_names.append(branch["name"])
+        except TypeError:
+            pass
 
     print("branch_amount", branch_amount)
     print("branch_names", branch_names)
@@ -154,31 +157,3 @@ if __name__ == "__main__":
         # get_languages(user_name=user_name, repo_name=repo_name)
         # get_branches(user_name=user_name, repo_name=repo_name)
         get_contributors_and_amounts_of_commits(user_name=user_name, repo_name=repo_name)
-
-    # get_rate_limit()
-    # get_languages(user_name="szymsza", repo_name="att-hackathon")
-    # get_branches(user_name="szymsza", repo_name="att-hackathon")
-    # get_contributors_and_amounts_of_commits(user_name="szymsza", repo_name="att-hackathon")
-
-# rate_limit = rate_limit_dict["resources"]["core"]["limit"]
-# print(rate_limit)
-# print(response.request.headers)
-
-# print(response_text)
-
-# print("hello world")
-
-# {
-#     [
-#         "team_name": "xxx",
-#         "table_number": 16,
-#         "repo_link": "www.fwfwe.cz",
-#         "commit_amount":45
-#     ],
-#     [
-#         "team_name": "yyy",
-#         "table_number": 4,
-#         "repo_link": "www.fwfwfwee.cz",
-#         "commit_amount":43
-#     ]
-# }

@@ -1,6 +1,11 @@
 {
   "team_list":     [
-    {
+      {
+          "team_name": "Iotaci",
+          "table_number": 1,
+          "repo_link": "https://github.com/sirluky/BusTrack"
+      },
+      {
           "team_name": "Gray Team",
           "table_number": 5,
           "repo_link": "https://github.com/blaza168/hack_2019"
@@ -9,6 +14,11 @@
           "team_name": "grepnebonic",
           "table_number": 6,
           "repo_link": "https://github.com/atthack-2019/rogue-ap-detection"
+      },
+      {
+          "team_name": "ForLoop",
+          "table_number": 7,
+          "repo_link": "https://github.com/JakubBlaha/forloop-LoRa-firmware"
       },
       {
           "team_name": "Prestiz",

@@ -1,4 +1,5 @@
-import collecter
+import collecter_github
+import collecter_gitlab
 import json
 import os
 import time
@@ -11,6 +12,12 @@ github_links_file_absolute = os.path.join(WORKING_DIRECTORY, github_links_file)
 with open(github_links_file_absolute, "r") as link_file:
     GITHUB_TEAM_LIST = json.loads(link_file.read())["team_list"]
 
+# Getting the list of repositories which should be checked
+gitlab_links_file = "teams_gitlab.json"
+gitlab_links_file_absolute = os.path.join(WORKING_DIRECTORY, gitlab_links_file)
+with open(gitlab_links_file_absolute, "r") as link_file:
+    GITLAB_TEAM_LIST = json.loads(link_file.read())["team_list"]
+
 def aggregate_languages():
     """
     Returning the leaderboard with information about used languages
@@ -22,13 +29,41 @@ def aggregate_languages():
         table_number = team["table_number"]
         repo_link = team["repo_link"]
 
-        user_name, repo_name = collecter._extract_name_and_repo_from_link(
+        user_name, repo_name = collecter_github._extract_name_and_repo_from_link(
             repo_link)
 
-        result = collecter.get_languages(
+        result = collecter_github.get_languages(
             user_name=user_name, repo_name=repo_name)
         language_amount = result["language_amount"]
         language_names = result["language_names"]
+
+        LANGUAGES_INFORMATION.append(
+            {
+                "team_name": team_name,
+                "table_number": table_number,
+                "repo_link": repo_link,
+                "language_amount": language_amount,
+                "language_names": language_names
+            }
+        )
+
+    for team in GITLAB_TEAM_LIST:
+        team_name = team["team_name"]
+        table_number = team["table_number"]
+        repo_link = team["repo_link"]
+        project_ids = team["project_ids"]
+
+        # Making a set, if these languages would be repeating in multiple projects
+        language_names = set()
+
+        for project_id in project_ids:
+            result = collecter_gitlab.get_languages(project_id=project_id)
+            for language in result["language_names"]:
+                language_names.add(language)
+
+        # To serialize into json we cannot use set unfortunatelly
+        language_names = list(language_names)
+        language_amount = len(language_names)
 
         LANGUAGES_INFORMATION.append(
             {
@@ -57,10 +92,33 @@ def aggregate_branches():
         table_number = team["table_number"]
         repo_link = team["repo_link"]
 
-        user_name, repo_name = collecter._extract_name_and_repo_from_link(
+        user_name, repo_name = collecter_github._extract_name_and_repo_from_link(
             repo_link)
 
-        result = collecter.get_branches(
+        result = collecter_github.get_branches(
+            user_name=user_name, repo_name=repo_name)
+        branch_amount = result["branch_amount"]
+        branch_names = result["branch_names"]
+
+        BRANCHES_INFORMATION.append(
+            {
+                "team_name": team_name,
+                "table_number": table_number,
+                "repo_link": repo_link,
+                "branch_amount": branch_amount,
+                "branch_names": branch_names
+            }
+        )
+
+    for team in GITLAB_TEAM_LIST:
+        team_name = team["team_name"]
+        table_number = team["table_number"]
+        repo_link = team["repo_link"]
+
+        user_name, repo_name = collecter_github._extract_name_and_repo_from_link(
+            repo_link)
+
+        result = collecter_github.get_branches(
             user_name=user_name, repo_name=repo_name)
         branch_amount = result["branch_amount"]
         branch_names = result["branch_names"]
@@ -92,14 +150,50 @@ def aggregate_contributors_and_commits():
         table_number = team["table_number"]
         repo_link = team["repo_link"]
 
-        user_name, repo_name = collecter._extract_name_and_repo_from_link(
+        user_name, repo_name = collecter_github._extract_name_and_repo_from_link(
             repo_link)
 
-        result = collecter.get_contributors_and_amounts_of_commits(
+        result = collecter_github.get_contributors_and_amounts_of_commits(
             user_name=user_name, repo_name=repo_name)
         contributors_amount = result["contributors_amount"]
         commit_amounts = result["commit_amounts"]
         overall_commit_amount = result["overall_commit_amount"]
+
+        CONTRIBUTORS_INFORMATION.append(
+            {
+                "team_name": team_name,
+                "table_number": table_number,
+                "repo_link": repo_link,
+                "contributors_amount": contributors_amount,
+                "commit_amounts": commit_amounts,
+                "overall_commit_amount": overall_commit_amount
+            }
+        )
+
+    for team in GITLAB_TEAM_LIST:
+        team_name = team["team_name"]
+        table_number = team["table_number"]
+        repo_link = team["repo_link"]
+        project_ids = team["project_ids"]
+
+        overall_commit_amount = 0
+        contributors = set()
+        commit_amounts = {}
+
+        for project_id in project_ids:
+
+            result = collecter_gitlab.get_contributors_and_amounts_of_commits(
+                project_id=project_id)
+            current_commit_amounts = result["commit_amounts"]
+            for person in current_commit_amounts:
+                contributors.add(person)
+                if person in commit_amounts:
+                    commit_amounts[person] += current_commit_amounts[person]
+                else:
+                    commit_amounts[person] = current_commit_amounts[person]
+            overall_commit_amount += result["overall_commit_amount"]
+
+        contributors_amount = len(contributors)
 
         CONTRIBUTORS_INFORMATION.append(
             {
