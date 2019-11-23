@@ -176,5 +176,5 @@ function clock(interval) {
 
 $(document).ready(function () {
     call_api();
-    clock(1); // in minutes
+    clock(2); // in minutes
 });
