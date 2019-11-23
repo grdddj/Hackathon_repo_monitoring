@@ -27,7 +27,7 @@ function parse_languages(json) {
     for (const [id, team] of Object.entries(json)) {
         language_names = '';
         for (const [sub_par, sub_value] of Object.entries(team.language_names)) {
-            language_names += `<div class="row">${sub_par}: ${sub_value}</div>`;
+            language_names += `<div class="row">${sub_value}</div>`;
         }
         html += `<tr>
         <th scope="row">${team.team_name}</th>
@@ -68,7 +68,7 @@ function parse_branches(json) {
     for (const [id, team] of Object.entries(json)) {
         branch_names = '';
         for (const [sub_par, sub_value] of Object.entries(team.branch_names)) {
-            branch_names += `<div class="row">${sub_par}: ${sub_value}</div>`;
+            branch_names += `<div class="row">${sub_value}</div>`;
         }
         html += `<tr>
         <th scope="row">${team.team_name}</th>
