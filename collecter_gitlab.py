@@ -46,7 +46,7 @@ def get_contributors_and_amounts_of_commits(project_id):
         except UnicodeEncodeError as e:
             print("UnicodeEncodeError", e)
     except Exception as e:
-        print(f"ERROR: {e}")
+        print("ERROR: {}".format(e))
         contributors_amount = 0
         commit_amounts = {}
         overall_commit_amount = 0
@@ -75,7 +75,7 @@ def get_branches(project_id):
         print("branch_amount", branch_amount)
         print("branch_names", branch_names)
     except Exception as e:
-        print(f"ERROR: {e}")
+        print("ERROR: {}".format(e))
         branch_amount = 0
         branch_names = []
 
@@ -102,7 +102,7 @@ def get_languages(project_id):
         print("language_amount", language_amount)
         print("language_names", language_names)
     except Exception as e:
-        print(f"ERROR: {e}")
+        print("ERROR: {}".format(e))
         language_amount = 0
         language_names = []
 
