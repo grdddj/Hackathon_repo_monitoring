@@ -25,25 +25,31 @@ def get_contributors_and_amounts_of_commits(project_id):
     Returning number of contributors and overall number of commits
         for the whole repository
     """
-    endpoint = CONTRIBUTORS_ENDPOINT_TEMPLATE.format(project_id)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
-
-    contributors_amount = len(response_dict)
-    commit_amounts = {}
-    for person in response_dict:
-        commit_amounts[person["name"]] = person["commits"]
-
-    overall_commit_amount = 0
-    for person  in commit_amounts:
-        overall_commit_amount += commit_amounts[person]
-
     try:
-        print("overall_commit_amount", overall_commit_amount)
-        print("commit_amounts", commit_amounts)
-        print("contributors_amount", contributors_amount)
-    except UnicodeEncodeError as e:
-        print("UnicodeEncodeError", e)
+        endpoint = CONTRIBUTORS_ENDPOINT_TEMPLATE.format(project_id)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
+
+        contributors_amount = len(response_dict)
+        commit_amounts = {}
+        for person in response_dict:
+            commit_amounts[person["name"]] = person["commits"]
+
+        overall_commit_amount = 0
+        for person  in commit_amounts:
+            overall_commit_amount += commit_amounts[person]
+
+        try:
+            print("overall_commit_amount", overall_commit_amount)
+            print("commit_amounts", commit_amounts)
+            print("contributors_amount", contributors_amount)
+        except UnicodeEncodeError as e:
+            print("UnicodeEncodeError", e)
+    except Exception as e:
+        print("ERROR: " + e)
+        contributors_amount = 0
+        commit_amounts = {}
+        overall_commit_amount = 0
 
     return {
         "contributors_amount": contributors_amount,
@@ -56,17 +62,22 @@ def get_branches(project_id):
     Returning number of branches for a certain repository,
         together with their names
     """
-    endpoint = BRANCHES_ENDPOINT_TEMPLATE.format(project_id)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
+    try:
+        endpoint = BRANCHES_ENDPOINT_TEMPLATE.format(project_id)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
 
-    branch_amount = len(response_dict)
-    branch_names = []
-    for branch in response_dict:
-        branch_names.append(branch["name"])
+        branch_amount = len(response_dict)
+        branch_names = []
+        for branch in response_dict:
+            branch_names.append(branch["name"])
 
-    print("branch_amount", branch_amount)
-    print("branch_names", branch_names)
+        print("branch_amount", branch_amount)
+        print("branch_names", branch_names)
+    except Exception as e:
+        print("ERROR: " + e)
+        branch_amount = 0
+        branch_names = []
 
     return {
         "branch_amount": branch_amount,
@@ -78,17 +89,22 @@ def get_languages(project_id):
     Returning number of languages for a certain repository,
         together with their names
     """
-    endpoint = LANGUAGES_ENDPOINT_TEMPLATE.format(project_id)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
+    try:
+        endpoint = LANGUAGES_ENDPOINT_TEMPLATE.format(project_id)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
 
-    language_amount = len(response_dict)
-    language_names = []
-    for language in response_dict:
-        language_names.append(language)
+        language_amount = len(response_dict)
+        language_names = []
+        for language in response_dict:
+            language_names.append(language)
 
-    print("language_amount", language_amount)
-    print("language_names", language_names)
+        print("language_amount", language_amount)
+        print("language_names", language_names)
+    except Exception as e:
+        print("ERROR: " + e)
+        language_amount = 0
+        language_names = []
 
     return {
         "language_amount": language_amount,

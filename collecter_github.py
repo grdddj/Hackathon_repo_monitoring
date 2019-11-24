@@ -1,48 +1,19 @@
 import requests
 import json
+import os
+
+WORKING_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
 # Information for Github API
 # NOTE: the first token suddently disappeared, and I do not know why
 TOKEN = "f868e0139417bf8ffc09341baa0376759c04587f"
 HEADERS = {"Authorization": "token {}".format(TOKEN)}
 
-TEAM_LIST = [
-    {
-        "team_name": "Gray Team",
-        "table_number": 5,
-        "repo_link": "https://github.com/blaza168/hack_2019"
-    },
-    {
-        "team_name": "grepnebonic",
-        "table_number": 6,
-        "repo_link": "https://github.com/atthack-2019/rogue-ap-detection"
-    },
-    {
-        "team_name": "Prestiz",
-        "table_number": 9,
-        "repo_link": "https://github.com/Fenristan/Hackathon-2019"
-    },
-    {
-        "team_name": "Hundiska",
-        "table_number": 10,
-        "repo_link": "https://github.com/szymsza/happy-chick-house"
-    },
-    {
-        "team_name": "Uzlabina",
-        "table_number": 13,
-        "repo_link": "https://github.com/kubax2000/ATTHACK2019"
-    },
-    {
-        "team_name": "Team20",
-        "table_number": 20,
-        "repo_link": "https://github.com/Kubos-cz/atthack20"
-    }
-]
-
-# Dictionaries to store the aggregated information
-CONTRIBUTORS_INFORMATION = {}
-LANGUAGES_INFORMATION = {}
-BRANCHES_INFORMATION = {}
+# Getting the list of repositories which should be checked
+github_links_file = "teams_github.json"
+github_links_file_absolute = os.path.join(WORKING_DIRECTORY, github_links_file)
+with open(github_links_file_absolute, "r") as link_file:
+    GITHUB_TEAM_LIST = json.loads(link_file.read())["team_list"]
 
 # Templates for endpoints, to which user_name and repo_name should be inputted
 CONTRIBUTORS_ENDPOINT_TEMPLATE = "https://api.github.com/repos/{}/{}/contributors"
@@ -76,22 +47,28 @@ def get_contributors_and_amounts_of_commits(user_name, repo_name):
     Returning number of contributors and overall number of commits
         for the whole repository
     """
-    endpoint = CONTRIBUTORS_ENDPOINT_TEMPLATE.format(user_name, repo_name)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
+    try:
+        endpoint = CONTRIBUTORS_ENDPOINT_TEMPLATE.format(user_name, repo_name)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
 
-    contributors_amount = len(response_dict)
-    commit_amounts = {}
-    for person in response_dict:
-        commit_amounts[person["login"]] = person["contributions"]
+        contributors_amount = len(response_dict)
+        commit_amounts = {}
+        for person in response_dict:
+            commit_amounts[person["login"]] = person["contributions"]
 
-    overall_commit_amount = 0
-    for person  in commit_amounts:
-        overall_commit_amount += commit_amounts[person]
+        overall_commit_amount = 0
+        for person  in commit_amounts:
+            overall_commit_amount += commit_amounts[person]
 
-    print("overall_commit_amount", overall_commit_amount)
-    print("commit_amounts", commit_amounts)
-    print("contributors_amount", contributors_amount)
+        print("overall_commit_amount", overall_commit_amount)
+        print("commit_amounts", commit_amounts)
+        print("contributors_amount", contributors_amount)
+    except Exception as e:
+        print("ERROR: " + e)
+        contributors_amount = 0
+        commit_amounts = {}
+        overall_commit_amount = 0
 
     return {
         "contributors_amount": contributors_amount,
@@ -104,20 +81,25 @@ def get_branches(user_name, repo_name):
     Returning number of branches for a certain repository,
         together with their names
     """
-    endpoint = BRANCHES_ENDPOINT_TEMPLATE.format(user_name, repo_name)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
+    try:
+        endpoint = BRANCHES_ENDPOINT_TEMPLATE.format(user_name, repo_name)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
 
-    branch_amount = len(response_dict)
-    branch_names = []
-    for branch in response_dict:
-        try:
-            branch_names.append(branch["name"])
-        except TypeError:
-            pass
+        branch_amount = len(response_dict)
+        branch_names = []
+        for branch in response_dict:
+            try:
+                branch_names.append(branch["name"])
+            except TypeError:
+                pass
 
-    print("branch_amount", branch_amount)
-    print("branch_names", branch_names)
+        print("branch_amount", branch_amount)
+        print("branch_names", branch_names)
+    except Exception as e:
+        print("ERROR: " + e)
+        branch_amount = 0
+        branch_names = []
 
     return {
         "branch_amount": branch_amount,
@@ -130,17 +112,22 @@ def get_languages(user_name, repo_name):
     Returning number of languages for a certain repository,
         together with their names
     """
-    endpoint = LANGUAGES_ENDPOINT_TEMPLATE.format(user_name, repo_name)
-    response = requests.get(endpoint, headers=HEADERS).text
-    response_dict = json.loads(response)
+    try:
+        endpoint = LANGUAGES_ENDPOINT_TEMPLATE.format(user_name, repo_name)
+        response = requests.get(endpoint, headers=HEADERS).text
+        response_dict = json.loads(response)
 
-    language_amount = len(response_dict)
-    language_names = []
-    for language in response_dict:
-        language_names.append(language)
+        language_amount = len(response_dict)
+        language_names = []
+        for language in response_dict:
+            language_names.append(language)
 
-    print("language_amount", language_amount)
-    print("language_names", language_names)
+        print("language_amount", language_amount)
+        print("language_names", language_names)
+    except Exception as e:
+        print("ERROR: " + e)
+        language_amount = 0
+        language_names = []
 
     return {
         "language_amount": language_amount,
@@ -150,7 +137,7 @@ def get_languages(user_name, repo_name):
 
 if __name__ == "__main__":
     get_rate_limit()
-    for team in TEAM_LIST:
+    for team in GITHUB_TEAM_LIST:
         repo_link = team["repo_link"]
         user_name, repo_name = _extract_name_and_repo_from_link(repo_link)
 
